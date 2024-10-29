@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 import fs from 'fs';
 
-let userID = 4198170
-let userName = "Tobse"
+let userID = 18457414
+let userName = "mocherfaoui"
 
 let templateFile = 'badge-template.svg'
 let outputFile = 'stackoverflow-badge.svg'
