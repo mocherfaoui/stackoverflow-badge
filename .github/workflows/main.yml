@@ -22,8 +22,8 @@ jobs:
       - name: Commit files
         if: env.update-badge == 'true'
         run: |
-         git config --local user.email "gihub-bot.tobse.eu"
-         git config --local user.name "github-james"
+         git config --local user.email "hi@cherfaoui.dev"
+         git config --local user.name "Mohammed"
          git add stackoverflow-badge.svg
          git commit -m "🤖 Update Badge" -a
       - name: Push changes
