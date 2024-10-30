@@ -76,10 +76,20 @@ function readFile(file) {
     return fs.readFileSync("./" + file, 'utf8')
 }
 
-function compileTemplate(template, badgeData) {
-    return template.replaceAll("${reputation}", badgeData.reputation)
+async function compileTemplate(template, badgeData) {
+    // Fetch the image and convert it to base64
+    const imageResponse = await fetch(badgeData.profileImage);
+    const imageBlob = await imageResponse.blob();
+    const base64Image = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(imageBlob);
+    });
+
+    return template
+        .replaceAll("${reputation}", badgeData.reputation)
         .replaceAll("${bronze}", badgeData.bronze)
         .replaceAll("${silver}", badgeData.silver)
         .replaceAll("${gold}", badgeData.gold)
-        .replaceAll("${profile_image}", badgeData.profileImage)
+        .replaceAll("${profile_image}", base64Image);
 }
