@@ -55,18 +55,20 @@ function parseJson(json) {
     let bronze = json.badge_counts.bronze;
     let silver = json.badge_counts.silver;
     let gold = json.badge_counts.gold;
-    let userName = json.display_name
+    let userName = json.display_name;
+    let profileImage = json.profile_image;
     console.log("Received from stackoverflow API:" + reputation + "," + bronze + "," + silver + "," + gold);
-    return new BadgeData(userName, reputation, bronze, silver, gold)
+    return new BadgeData(userName, reputation, bronze, silver, gold, profileImage)
 }
 
 class BadgeData {
-    constructor(username, reputation, bronze, silver, gold) {
+    constructor(username, reputation, bronze, silver, gold, profileImage) {
         this.username = username;
         this.reputation = reputation;
         this.bronze = bronze;
         this.silver = silver;
         this.gold = gold;
+        this.profileImage = profileImage;
     }
 }
 
@@ -79,4 +81,5 @@ function compileTemplate(template, badgeData) {
         .replaceAll("${bronze}", badgeData.bronze)
         .replaceAll("${silver}", badgeData.silver)
         .replaceAll("${gold}", badgeData.gold)
+        .replaceAll("${profile_image}", badgeData.profileImage)
 }
