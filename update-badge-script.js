@@ -15,14 +15,15 @@ fetch(getUserURL, {
 })
     .then((res) => res.json())
     .then((json) => {
-        updateBadge(json.items[0])
-    });
+        return updateBadge(json.items[0])
+    })
+    .catch(error => console.error(error));
 
-function updateBadge(json) {
+async function updateBadge(json) {
     try {
         let badgeData = parseJson(json);
         let templateData = readFile(templateFile);
-        let compiledBadge = compileTemplate(templateData, badgeData);
+        let compiledBadge = await compileTemplate(templateData, badgeData);
         let oldBadge = readFile(outputFile);
 
         if (userName !== badgeData.username) {
@@ -77,14 +78,10 @@ function readFile(file) {
 }
 
 async function compileTemplate(template, badgeData) {
-    // Fetch the image and convert it to base64
+    // Fetch the image and convert it to base64 using Node.js methods
     const imageResponse = await fetch(badgeData.profileImage);
-    const imageBlob = await imageResponse.blob();
-    const base64Image = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.readAsDataURL(imageBlob);
-    });
+    const arrayBuffer = await imageResponse.arrayBuffer();
+    const base64Image = 'data:image/jpeg;base64,' + Buffer.from(arrayBuffer).toString('base64');
 
     return template
         .replaceAll("${reputation}", badgeData.reputation)
